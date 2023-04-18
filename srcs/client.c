@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myanez-p <myanez-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melanieyanez <melanieyanez@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 11:48:45 by myanez-p          #+#    #+#             */
-/*   Updated: 2023/04/18 17:03:38 by myanez-p         ###   ########.fr       */
+/*   Updated: 2023/04/18 23:16:33 by melanieyane      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,23 @@ void	send_message(char *message, int pid_server)
 		while (message[i] > 0)
 		{
 			if (message[i] % 2 == 0)
+			{
+				//printf("0");
 				kill(pid_server, SIGUSR1);
+			}
 			else
+			{
+				//printf("1");
 				kill(pid_server, SIGUSR2);
+			}
 			message[i] /= 2;
-			usleep(100000);
+			usleep(100);
 		}
 		while (tmp < 128)
 		{
+			//printf("0");
 			kill(pid_server, SIGUSR1);
-			usleep(100000);
+			usleep(100);
 			tmp *= 2;
 		}
 		i ++;
@@ -57,8 +64,6 @@ int	main(int argc, char **argv)
 	{
 		pid_server = ft_atoi(argv[1]);
 		message = argv[2];
-		ft_printf("Server PID: %d\n", pid_server);
-		ft_printf("Message : %s\n", message);
 		send_message(message, pid_server);
 	}
 	else

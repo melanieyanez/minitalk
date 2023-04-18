@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: myanez-p <myanez-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melanieyanez <melanieyanez@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 11:48:49 by myanez-p          #+#    #+#             */
-/*   Updated: 2023/04/18 16:56:37 by myanez-p         ###   ########.fr       */
+/*   Updated: 2023/04/18 23:16:53 by melanieyane      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@
 int	ft_pow(int base, int power)
 {
 	int	base_i;
-	
+
 	base_i = base;
-	while (power - 1)
+	if (power == 0)
+		base = 1;
+	while ((power - 1) > 0)
 	{
 		base *= base_i;
 		power --;
@@ -41,24 +43,20 @@ void	receive_message(int num_signal)
 	static int			value;
 	static int			power;
 
-	if (!value)
-		value = 0;
-	if (!power)
-		power = 0;
-	if (num_signal == SIGUSR1)
+	if (num_signal == SIGUSR2)
 	{
-		printf("1");
+		//printf("1");
 		value += ft_pow(2, power);
 		power ++;
 	}
-	else
+	if (num_signal == SIGUSR1)
 	{
-		printf("0");
+		//printf("0");
 		power ++;
 	}
-	if (power == 8)
+	if (power > 7)
 	{
-		printf(" value: %d\n", value);
+		write(1, &value, 1);
 		power = 0;
 		value = 0;
 	}
@@ -67,9 +65,8 @@ void	receive_message(int num_signal)
 int	main(void)
 {
 	ft_printf("Server PID: %d\n", getpid());
-	ft_printf("resultat : %d\n", ft_pow(2, 3));
 	signal(SIGUSR1, receive_message);
 	signal(SIGUSR2, receive_message);
-	while (42)
+	while (1)
 		pause();
 }
