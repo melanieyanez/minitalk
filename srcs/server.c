@@ -6,7 +6,7 @@
 /*   By: melanieyanez <melanieyanez@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 11:48:49 by myanez-p          #+#    #+#             */
-/*   Updated: 2023/04/18 23:16:53 by melanieyane      ###   ########.fr       */
+/*   Updated: 2023/04/18 23:39:41 by melanieyane      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 /* mais signal est quand même plus simple */
 
 /* je dois transformer mon binaire en int */
+
+/* je dois créer une static structure */
 
 int	ft_pow(int base, int power)
 {
