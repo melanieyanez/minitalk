@@ -3,66 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melanieyanez <melanieyanez@student.42.f    +#+  +:+       +#+        */
+/*   By: myanez-p <myanez-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 11:48:49 by myanez-p          #+#    #+#             */
-/*   Updated: 2023/04/18 23:39:41 by melanieyane      ###   ########.fr       */
+/*   Updated: 2023/04/24 11:10:06 by myanez-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <unistd.h>
-#include "../libft/includes/libft.h"
+#include "../includes/minitalk.h"
 
-/* le serveur doit être lancé en premier et afficher son pid */
-/* le serveur doit recevoir le message et l'afficher */
-/* bonus: accusé de réception */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/* on utilise plutôt sigaction que signal car plus récent */
-/* mais signal est quand même plus simple */
-
-/* je dois transformer mon binaire en int */
-
-/* je dois créer une static structure */
-
-int	ft_pow(int base, int power)
-{
-	int	base_i;
-
-	base_i = base;
-	if (power == 0)
-		base = 1;
-	while ((power - 1) > 0)
-	{
-		base *= base_i;
-		power --;
-	}
-	return (base);
-}
+/* Handler des signaux reçus */
+/* qui permet de transformer le binaire en caractères */
 
 void	receive_message(int num_signal)
 {
-	static int			value;
-	static int			power;
+	static t_message	data_message;
 
 	if (num_signal == SIGUSR2)
 	{
-		//printf("1");
-		value += ft_pow(2, power);
-		power ++;
+		data_message.value += ft_pow(2, data_message.power);
+		data_message.power ++;
 	}
 	if (num_signal == SIGUSR1)
+		data_message.power ++;
+	if (data_message.power > 7)
 	{
-		//printf("0");
-		power ++;
-	}
-	if (power > 7)
-	{
-		write(1, &value, 1);
-		power = 0;
-		value = 0;
+		write(1, &data_message.value, 1);
+		data_message.power = 0;
+		data_message.value = 0;
 	}
 }
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 int	main(void)
 {

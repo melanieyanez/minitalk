@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melanieyanez <melanieyanez@student.42.f    +#+  +:+       +#+        */
+/*   By: myanez-p <myanez-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 11:48:45 by myanez-p          #+#    #+#             */
-/*   Updated: 2023/04/18 23:16:33 by melanieyane      ###   ########.fr       */
+/*   Updated: 2023/04/24 11:09:33 by myanez-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <unistd.h>
-#include "../libft/includes/libft.h"
+#include "../includes/minitalk.h"
 
-/* on utilise un usleep pour être sûr qu'on ne rate pas un autre signal */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-/* SIGUSR1 envoie des 0, SIGUSR2 envoie des 1 */
+/* Fonction envoyant les caractères du message en paramètres */
+/* sous forme binaire */
 
 void	send_message(char *message, int pid_server)
 {
@@ -30,21 +29,14 @@ void	send_message(char *message, int pid_server)
 		while (message[i] > 0)
 		{
 			if (message[i] % 2 == 0)
-			{
-				//printf("0");
 				kill(pid_server, SIGUSR1);
-			}
 			else
-			{
-				//printf("1");
 				kill(pid_server, SIGUSR2);
-			}
 			message[i] /= 2;
 			usleep(100);
 		}
 		while (tmp < 128)
 		{
-			//printf("0");
 			kill(pid_server, SIGUSR1);
 			usleep(100);
 			tmp *= 2;
@@ -53,7 +45,7 @@ void	send_message(char *message, int pid_server)
 	}
 }
 
-/* le client prend en paramètre le pid du serveur et le message */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 int	main(int argc, char **argv)
 {
